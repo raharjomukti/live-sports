@@ -1,6 +1,8 @@
 import Image from "next/image";
 import ProductActions from "../../components/product-detail/product-actions";
 import priceFormatter from "@/app/utils/price-formatter";
+import { getProductDetail } from "@/app/services/product.service";
+import { getImageUrl } from "@/app/lib/api";
 
 type TPageProps = {
     params: Promise<{id: string}>;
@@ -9,30 +11,33 @@ type TPageProps = {
 const ProductDetail = async ({params}: TPageProps) => {
     const {id} = await params;
     
+    const product = await getProductDetail(id);
+
+    console.log(product);
+
     return (
     <main className="container mx-auto py-40 flex gap-12">
         <div className="bg-primary-light aspect-square min-w-140 flex justify-center items-center">
             <Image 
-            src="/images/products/product-1.png"
+            src={getImageUrl(product.imageUrl)}
             width={550}
             height={550}
-            alt="Product Image-1" 
+            alt={product.name} 
             className="aspect-square object-contain w-full"
             />
         </div>
 
         <div className="w-full py-7">
-            <h1 className="font-bold text-5xl mb-6">Live Sporty HyperSoccer v3 {id} </h1>
+            <h1 className="font-bold text-5xl mb-6">{product.name}</h1>
             <div className="bg-primary-light rounded-full text-primary py-2 px-6 w-fit mb-5">
-                Football
+                {product.category.name}
             </div>
-            <p className="leading-loose mb-8">
-                Description of the product goes here. This is a detailed description of the product features and benefits. Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti nisi aspernatur minima commodi? Assumenda distinctio consectetur minima minus quo, eum ipsa quisquam vitae rerum, quasi recusandae harum ex? Voluptatibus, debitis.
-            </p>
+            <p className="leading-loose mb-8">{product.description}</p>
             <div className="text-primary text-[32px] font-semibold mb-12">
-                {priceFormatter(450000)}
+                {priceFormatter(product.price)}
             </div>
-            <ProductActions />
+            <div className="mb-5">Stock Product : {product.stock}</div>
+                <ProductActions product={product} stock={product.stock} />
         </div>
     </main>
     )

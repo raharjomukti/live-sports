@@ -3,41 +3,15 @@ import Image from 'next/image';
 import Button from './button';
 import { FiArrowRight, FiTrash, FiTrash2 } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
-
-export const cartList = [
-  {
-    name: "Live Sporty HyperSoccer v3",
-    category: "Running",
-    price: 450000,
-    qty : 56,
-    imgUrl: "product-1.png",
-  },
-  {
-    name: "SportsOn Product 2",
-    category: "Running",
-    price: 250000,
-    qty : 62,
-    imgUrl: "product-1.png",
-  },
-  {
-    name: "SportsOn Product 3",
-    category: "Running",
-    price: 230000,
-    qty : 45,
-    imgUrl: "product-3.png",
-  },
-  {
-    name: "SportsOn Product 4",
-    category: "Running",
-    price: 440000,
-    qty : 32,
-    imgUrl: "product-4.png",
-  }
-];
+import { useCartStore } from '@/app/hooks/use-cart-store';
+import { getImageUrl } from '@/app/lib/api';
 
 const CartPopup = () => {
     const {push} = useRouter();
-    const totalPrice = cartList.reduce((total, item) => total + (item.price * item.qty), 0);
+    const { items, removeItem } = useCartStore()
+
+    const totalPrice = items.reduce((total, item) => total + (item.price * item.qty), 0);
+    console.log("Cart items", items)
 
     const handleCheckout = () => {
         push("/checkout")
@@ -48,11 +22,11 @@ const CartPopup = () => {
             <div className="p-4 border-b border-gray-200 font-bold text-center">
                 Shopping Card
             </div>
-            {cartList.map((item, index) => (
+            {items.length ? items.map((item, index) => (
                 <div className="border-b border-gray-200 p-4 flex gap-3" key={index}>
                     <div className="bg-primary-light aspect-square w-16 flex justify-center items-center">
                     <Image
-                        src={`/images/products/${item.imgUrl}`}
+                        src={getImageUrl(item.imageUrl)}
                         alt={item.name}
                         width={60}
                         height={60}
@@ -66,11 +40,15 @@ const CartPopup = () => {
                             <div className="text-primary font-semibold">{priceFormatter(item.price)}</div>
                         </div>
                     </div>
-                    <Button size="small" variant="ghost" className="w-7 h-7 p-0! self-center ml-auto">
+                    <Button size="small" variant="ghost" className="w-7 h-7 p-0! self-center ml-auto" onClick={() => removeItem(item._id)}>
                         <FiTrash2 />
                     </Button>
                 </div>
-            ))}
+            )): (
+                <div className="text-center opacity-50 py-5">
+                    Your Shopping is Empty
+                </div>
+            )}
             <div className="border-t border-gray-200 p-4">
                 <div className='flex justify-between'>
                     <div className="text-sm">Total:</div>
