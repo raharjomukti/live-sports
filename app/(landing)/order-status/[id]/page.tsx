@@ -1,5 +1,3 @@
-"use client";
-
 import OrderConfirmed from "../../components/order-status/order-confirmed";
 import OrderSubmited from "../../components/order-status/order-submited";
 import { getTransactionById } from "@/app/services/transaction.service";
