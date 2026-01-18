@@ -21,19 +21,19 @@ const bankData = [
 const BankInfoList = () => {
     return (
         <div className="grid grid-cols-3 gap-8">
-            {
-                bankData.map({data, index} => (
-                    <div key={index}>
-                        <div className="flex justify-between bg-white gap-5">
-                            <div className="flex gap-2">
+            {bankData.map((data, index) => (
+                    <div className="bg-white rounded-lg border border-gray-200" key={index}>
+                        <div className="flex justify-between gap-5">
+                            <div className="flex gap-2 items-center">
                                 <div className="bg-blue-50 text-blue-600 rounded w-12 h-12 flex justify-center items-center">
-                                    <FiCreditCard />
+                                    <FiCreditCard size={24}/>
                                 </div>
                             </div>
+                                <div className="font-semibold">{data.bankName}</div>
+                                <div className="text-xs opacity-50">Bank Transfer</div>
                         </div>
                     </div>
-                ));
-            };
+                ))}
         </div>
     )
 }

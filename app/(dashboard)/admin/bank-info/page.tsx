@@ -5,6 +5,7 @@ import { FiPlus } from "react-icons/fi";
 import BankInfoTable from "../../components/categories/category-table";
 import BankInfoModal from "../../components/categories/category-modal";
 import { useState } from "react";
+import BankInfoList from "../../components/bank-info/bank-info-list";
 
 const BankInfoManagement = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,7 @@ const BankInfoManagement = () => {
                     Add Bank Account
                 </Button>
             </div>
-            <BankInfoTable />
+            <BankInfoList />
             <BankInfoModal isOpen={isOpen} onClose={handleCloseModal}/>
         </div>
     )
